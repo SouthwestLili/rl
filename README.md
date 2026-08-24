@@ -216,6 +216,41 @@ The experiments demonstrate how the choice of Q-function representation affects 
 
 ---
 
+## Output
+
+The following learning curves visualize the training and testing performance of the reinforcement learning agents using average episodic reward.
+
+### Tabular Q-Learning
+
+The Tabular Q-Learning agent improves rapidly during training and reaches a relatively stable testing performance.
+
+```
+            Avg reward: 0.497583 | Ewma reward: 0.507615: 100%|█| 200/200 [00:01<00:00, 141.
+            Avg reward: 0.499303 | Ewma reward: 0.492417: 100%|█| 200/200 [00:01<00:00, 152.
+            Avg reward: 0.492159 | Ewma reward: 0.519425: 100%|█| 200/200 [00:01<00:00, 159.
+            Avg reward: 0.473569 | Ewma reward: 0.481953: 100%|█| 200/200 [00:01<00:00, 166.
+            Avg reward: 0.489471 | Ewma reward: 0.498283: 100%|█| 200/200 [00:01<00:00, 167.
+            Avg reward: 0.503508 | Ewma reward: 0.532613: 100%|█| 200/200 [00:01<00:00, 126.
+            Avg reward: 0.501479 | Ewma reward: 0.535060: 100%|█| 200/200 [00:01<00:00, 118.
+            Avg reward: 0.485003 | Ewma reward: 0.508956: 100%|█| 200/200 [00:01<00:00, 107.
+            Avg reward: 0.491784 | Ewma reward: 0.526178: 100%|█| 200/200 [00:01<00:00, 138.
+            Avg reward: 0.495387 | Ewma reward: 0.515503: 100%|█| 200/200 [00:01<00:00, 126.
+```
+
+![Tabular Q-Learning Learning Curve](images/tabular_q_learning.png)
+
+### Linear Function Approximation
+
+The Linear Q-Learning agent was evaluated using average episodic reward across multiple training and testing runs. Its performance reflects the limitations of using a simple linear function to approximate the Q-function.
+
+### Deep Q-Learning (DQN)
+
+The DQN uses a neural network to approximate Q-values, allowing the agent to learn a more flexible representation than the linear model.
+
+![DQN Learning Curve](images/dqn.png)
+
+---
+
 ## Experimental Progression
 
 The project illustrates the progression from exact value storage to learned representations:
