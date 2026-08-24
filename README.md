@@ -41,32 +41,48 @@ The first implementation represents each unique textual state using a discrete i
 
 A state consists of:
 
-\[
-s = (s_r, s_q)
-\]
+`state = (room_description, quest_description)`
 
 where:
 
-- \(s_r\) represents the room description
-- \(s_q\) represents the quest description
+- `room_description` represents the textual description of the agent's current room;
+- `quest_description` represents the agent's current quest.
 
-The agent maintains a Q-table over state-action pairs and updates its values using:
+The agent maintains a Q-table containing a Q-value for each state-command pair.
 
-\[
-Q(s,a) \leftarrow Q(s,a)
-+ \alpha
-\left[
-r + \gamma \max_{a'} Q(s',a')
-- Q(s,a)
-\right]
-\]
+Each command consists of an action and an object:
 
-An **epsilon-greedy policy** balances exploration and exploitation:
+`command = (action, object)`
 
-- with probability \(\epsilon\), select a random action;
-- with probability \(1-\epsilon\), select the action with the highest current Q-value.
+For example:
 
-Experiments were performed to investigate how the exploration parameter \(\epsilon\) and learning rate \(\alpha\) affect convergence.
+- `eat apple`
+- `sleep bed`
+- `watch tv`
+- `exercise bike`
+- `go north`
+
+For each transition `(s, c, r, s')`, the Q-value is updated using the Q-learning rule:
+
+`Q(s, c) = Q(s, c) + alpha * [r + gamma * max Q(s', c') - Q(s, c)]`
+
+where:
+
+- `alpha` is the learning rate;
+- `gamma` is the discount factor;
+- `r` is the immediate reward;
+- `max Q(s', c')` represents the highest Q-value among all possible commands in the next state.
+
+For terminal states, there is no future Q-value, so the update becomes:
+
+`Q(s, c) = Q(s, c) + alpha * [r - Q(s, c)]`
+
+An **epsilon-greedy policy** is used to balance exploration and exploitation:
+
+- with probability `epsilon`, the agent selects a random command;
+- with probability `1 - epsilon`, the agent selects the command with the highest current Q-value.
+
+Experiments were performed with different values of `epsilon` and `alpha` to investigate how exploration and learning rate affect convergence and agent performance.
 
 ---
 
@@ -76,76 +92,79 @@ Maintaining an explicit Q-value for every state-action pair becomes impractical 
 
 To address this limitation, the second implementation approximates the Q-function using a linear model:
 
-\[
-Q(s,c;\theta) = \phi(s,c)^T\theta
-\]
+`Q(s, c; theta) = phi(s, c)^T * theta`
 
 where:
 
-\[
-- \(\phi(s,c)\) is the feature representation of a state-command pair;
-- \(\theta\) contains the learnable parameters.
-\]
+- `phi(s, c)` is the feature vector representing the state-command pair;
+- `theta` is the learnable parameter vector.
 
-Textual states are converted into vector representations using a **Bag-of-Words (BoW)** representation.
+Textual states are first converted into vector representations using a **Bag-of-Words (BoW)** representation:
 
-Action-dependent feature blocks allow different commands to learn separate parameter vectors while sharing the same state representation framework.
+`Text State → Bag-of-Words → State Feature Vector`
 
-The parameters are updated using the temporal-difference error:
+To distinguish different commands, the state feature vector is placed into a command-specific feature block:
 
-\[
-\delta =
-r + \gamma \max_{c'}Q(s',c';\theta)
-- Q(s,c;\theta)
-\]
+`phi(s, c) = [0, ..., psi_R(s), ..., 0]`
 
-and a gradient update:
+This allows each command to learn its own parameter vector while using the same state representation framework.
 
-\[
-\theta \leftarrow
-\theta + \alpha \delta \phi(s,c)
-\]
+For each transition `(s, c, r, s')`, the temporal-difference (TD) error is:
 
-This experiment also demonstrates an important limitation: a simple linear model may not have sufficient representational capacity to accurately approximate the Q-function even in a relatively small environment.
+`delta = r + gamma * max Q(s', c') - Q(s, c)`
+
+where the maximum is taken over all possible next commands `c'`.
+
+For terminal states, there is no future Q-value, so:
+
+`delta = r - Q(s, c)`
+
+The parameters are updated using:
+
+`theta = theta + alpha * delta * phi(s, c)`
+
+where `alpha` is the learning rate.
+
+This experiment also demonstrates an important limitation of linear function approximation: a simple linear model may not have sufficient representational capacity to accurately approximate the Q-function, even in a relatively small environment.
 
 ---
 
-### 3. Deep Q-Network
+### 3. Deep Q-Network (DQN)
 
 The final implementation replaces the linear Q-function approximator with a **Deep Q-Network (DQN)**.
 
 The textual state is first transformed into a Bag-of-Words feature vector:
 
-\[
-s_{\text{text}}
-\rightarrow
-\text{Bag-of-Words}
-\rightarrow
-\text{DQN}
-\rightarrow
-Q\text{-values}
-\]
+`Text State → Bag-of-Words → DQN → Q-values`
 
 The neural network predicts Q-values for possible actions and objects.
 
-For a transition:
+For each transition:
 
-\[
-(s,a,r,s')
-\]
+`(s, a, r, s')`
 
-the Q-learning target is based on:
+the Q-learning target for a non-terminal state is:
 
-\[
-y =
-r + \gamma \max_{a'} Q(s',a')
-\]
+`y = r + gamma * max Q(s', a')`
 
-for non-terminal states, while terminal transitions use the immediate reward as the target.
+where the maximum is taken over all possible next actions `a'`.
 
-The model is optimized by minimizing the difference between the predicted Q-value and the Q-learning target using gradient-based optimization.
+For a terminal state, there is no future reward, so the target becomes:
 
-An epsilon-greedy policy is again used during both training and evaluation.
+`y = r`
+
+The prediction error is measured using the squared loss:
+
+`L = 1/2 * (y - Q(s, a))^2`
+
+The DQN parameters are then updated using gradient-based optimization to minimize this loss.
+
+An **epsilon-greedy policy** is used for action selection:
+
+- with probability `epsilon`, the agent selects a random action;
+- with probability `1 - epsilon`, the agent selects the action with the highest predicted Q-value.
+
+During training, the DQN parameters are updated from observed transitions. During testing, the learned policy is evaluated without updating the network.
 
 ---
 
