@@ -260,38 +260,44 @@ The result demonstrates an important limitation of simple linear function approx
 ```
 RUN ---> python agent_linear.py
 
-            Avg reward: 0.248510 | Ewma reward: 0.368150: 100%|█| 600/600 [00:35<00:00, 16.9
-            Avg reward: 0.249588 | Ewma reward: 0.381132: 100%|█| 600/600 [00:34<00:00, 17.2
-            Avg reward: 0.219707 | Ewma reward: 0.314810: 100%|█| 600/600 [00:36<00:00, 16.4
-            Avg reward: 0.259538 | Ewma reward: 0.378542: 100%|█| 600/600 [00:34<00:00, 17.3
-            Avg reward: 0.255547 | Ewma reward: 0.375508: 100%|█| 600/600 [00:34<00:00, 17.4
-            Avg reward: 0.247869 | Ewma reward: 0.311745: 100%|█| 600/600 [00:35<00:00, 16.7
-            Avg reward: 0.254208 | Ewma reward: 0.342682: 100%|█| 600/600 [00:40<00:00, 14.9
-            Avg reward: 0.251781 | Ewma reward: 0.347270: 100%|█| 600/600 [00:40<00:00, 14.7
-            Avg reward: 0.234385 | Ewma reward: 0.333607: 100%|█| 600/600 [00:37<00:00, 15.8
-            Avg reward: 0.244677 | Ewma reward: 0.349393: 100%|█| 600/600 [00:38<00:00, 15.5
+            Avg reward: 0.258785 | Ewma reward: 0.354678: 100%|█| 600/600 [00:34<00:00, 17.6
+            Avg reward: 0.255159 | Ewma reward: 0.359309: 100%|█| 600/600 [00:34<00:00, 17.1
+            Avg reward: 0.262132 | Ewma reward: 0.330960: 100%|█| 600/600 [00:34<00:00, 17.5
+            Avg reward: 0.256357 | Ewma reward: 0.316044: 100%|█| 600/600 [00:33<00:00, 17.9
+            Avg reward: 0.259168 | Ewma reward: 0.385576: 100%|█| 600/600 [00:32<00:00, 18.4
+            Avg reward: 0.254242 | Ewma reward: 0.360913: 100%|█| 600/600 [00:34<00:00, 17.5
+            Avg reward: 0.224929 | Ewma reward: 0.323760: 100%|█| 600/600 [00:36<00:00, 16.4
+            Avg reward: 0.258680 | Ewma reward: 0.299341: 100%|█| 600/600 [00:32<00:00, 18.2
+            Avg reward: 0.245529 | Ewma reward: 0.320811: 100%|█| 600/600 [00:34<00:00, 17.5
+            Avg reward: 0.224714 | Ewma reward: 0.261852: 100%|█| 600/600 [00:36<00:00, 16.3
 
 ```
 
+![Linear Function Learning Curve](images/linear.png)
+
 ### Deep Q-Learning (DQN)
 
-The DQN uses a neural network to approximate Q-values, allowing the agent to learn a more flexible representation than the linear model.
+The DQN achieves an average episodic reward of approximately **0.47** across 10 experimental runs.
+
+The learning curve shows a rapid improvement during the early stages of training, followed by relatively stable performance after approximately 60–100 epochs. The reward stabilizes around `0.50–0.53` in the learning curve.
+
+Compared with the linear function approximator, the DQN achieves substantially better performance, demonstrating that the nonlinear neural-network representation is better able to approximate the Q-function for this environment.
 
 #### Example Output
 
 ```
 RUN ---> python agent_dqn.py
 
-            Avg reward: 0.480499 | Ewma reward: 0.523035: 100%|█| 300/300 [00:46<00:00,  6.4
-            Avg reward: 0.482076 | Ewma reward: 0.535152: 100%|█| 300/300 [00:52<00:00,  5.7
-            Avg reward: 0.455508 | Ewma reward: 0.527707: 100%|█| 300/300 [00:59<00:00,  5.0
-            Avg reward: 0.476610 | Ewma reward: 0.538855: 100%|█| 300/300 [00:48<00:00,  6.2
-            Avg reward: 0.450522 | Ewma reward: 0.524614: 100%|█| 300/300 [00:56<00:00,  5.3
-            Avg reward: 0.468956 | Ewma reward: 0.513336: 100%|█| 300/300 [00:55<00:00,  5.4
-            Avg reward: 0.470623 | Ewma reward: 0.516475: 100%|█| 300/300 [01:05<00:00,  4.5
-            Avg reward: 0.474933 | Ewma reward: 0.502803: 100%|█| 300/300 [01:15<00:00,  3.9
-            Avg reward: 0.478990 | Ewma reward: 0.532622: 100%|█| 300/300 [01:25<00:00,  3.5
-            Avg reward: 0.476374 | Ewma reward: 0.509053: 100%|█| 300/300 [00:50<00:00,  5.9
+            Avg reward: 0.468756 | Ewma reward: 0.519246: 100%|█| 300/300 [00:56<00:00,  5.3
+            Avg reward: 0.469638 | Ewma reward: 0.530501: 100%|█| 300/300 [00:49<00:00,  6.0
+            Avg reward: 0.476111 | Ewma reward: 0.532606: 100%|█| 300/300 [00:48<00:00,  6.2
+            Avg reward: 0.473854 | Ewma reward: 0.530444: 100%|█| 300/300 [00:48<00:00,  6.2
+            Avg reward: 0.480406 | Ewma reward: 0.526519: 100%|█| 300/300 [00:46<00:00,  6.4
+            Avg reward: 0.482150 | Ewma reward: 0.497850: 100%|█| 300/300 [00:49<00:00,  6.0
+            Avg reward: 0.468225 | Ewma reward: 0.514457: 100%|█| 300/300 [00:50<00:00,  5.9
+            Avg reward: 0.476535 | Ewma reward: 0.502785: 100%|█| 300/300 [00:46<00:00,  6.5
+            Avg reward: 0.475726 | Ewma reward: 0.508126: 100%|█| 300/300 [00:48<00:00,  6.2
+            Avg reward: 0.470882 | Ewma reward: 0.538041: 100%|█| 300/300 [01:04<00:00,  4.6
 
 ```
 
