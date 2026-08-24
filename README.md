@@ -222,10 +222,16 @@ The following learning curves visualize the training and testing performance of 
 
 ### Tabular Q-Learning
 
-The Tabular Q-Learning agent improves rapidly during training and reaches a relatively stable testing performance.
+The Tabular Q-Learning agent learns rapidly during the early stages of training. The average episodic reward increases from approximately `-0.1` to around `0.5` and becomes relatively stable after approximately `15–20 epochs`.
+
+Across multiple experimental runs, the converged average reward remains close to `0.5`, indicating that the learned policy is relatively stable and consistent. Small fluctuations remain after convergence due to the stochastic nature of epsilon-greedy action selection and evaluation.
+
+Overall, the results demonstrate that Tabular Q-Learning can efficiently learn a stable policy for this relatively small discrete environment.
+
+#### Example Output
 
 ```
-run: python agent_tabular_ql.py
+RUN ---> python agent_tabular_ql.py
 
             Avg reward: 0.497583 | Ewma reward: 0.507615: 100%|█| 200/200 [00:01<00:00, 141.
             Avg reward: 0.499303 | Ewma reward: 0.492417: 100%|█| 200/200 [00:01<00:00, 152.
@@ -243,11 +249,51 @@ run: python agent_tabular_ql.py
 
 ### Linear Function Approximation
 
-The Linear Q-Learning agent was evaluated using average episodic reward across multiple training and testing runs. Its performance reflects the limitations of using a simple linear function to approximate the Q-function.
+The Linear Q-Learning agent achieves an average episodic reward of approximately `0.25` across multiple experimental runs.
+
+Despite training for `600 epochs`, its performance remains substantially below the Tabular Q-Learning agent, which achieves an average reward of approximately `0.5`. This suggests that the linear function approximator is unable to represent the Q-function sufficiently well for this environment.
+
+The result demonstrates an important limitation of simple linear function approximation: although it reduces the need to maintain a separate Q-value for every state-command pair, the restricted representational capacity can lead to significantly lower policy performance.
+
+#### Example Output
+
+```
+RUN ---> python agent_linear.py
+
+            Avg reward: 0.248510 | Ewma reward: 0.368150: 100%|█| 600/600 [00:35<00:00, 16.9
+            Avg reward: 0.249588 | Ewma reward: 0.381132: 100%|█| 600/600 [00:34<00:00, 17.2
+            Avg reward: 0.219707 | Ewma reward: 0.314810: 100%|█| 600/600 [00:36<00:00, 16.4
+            Avg reward: 0.259538 | Ewma reward: 0.378542: 100%|█| 600/600 [00:34<00:00, 17.3
+            Avg reward: 0.255547 | Ewma reward: 0.375508: 100%|█| 600/600 [00:34<00:00, 17.4
+            Avg reward: 0.247869 | Ewma reward: 0.311745: 100%|█| 600/600 [00:35<00:00, 16.7
+            Avg reward: 0.254208 | Ewma reward: 0.342682: 100%|█| 600/600 [00:40<00:00, 14.9
+            Avg reward: 0.251781 | Ewma reward: 0.347270: 100%|█| 600/600 [00:40<00:00, 14.7
+            Avg reward: 0.234385 | Ewma reward: 0.333607: 100%|█| 600/600 [00:37<00:00, 15.8
+            Avg reward: 0.244677 | Ewma reward: 0.349393: 100%|█| 600/600 [00:38<00:00, 15.5
+
+```
 
 ### Deep Q-Learning (DQN)
 
 The DQN uses a neural network to approximate Q-values, allowing the agent to learn a more flexible representation than the linear model.
+
+#### Example Output
+
+```
+RUN ---> python agent_dqn.py
+
+            Avg reward: 0.480499 | Ewma reward: 0.523035: 100%|█| 300/300 [00:46<00:00,  6.4
+            Avg reward: 0.482076 | Ewma reward: 0.535152: 100%|█| 300/300 [00:52<00:00,  5.7
+            Avg reward: 0.455508 | Ewma reward: 0.527707: 100%|█| 300/300 [00:59<00:00,  5.0
+            Avg reward: 0.476610 | Ewma reward: 0.538855: 100%|█| 300/300 [00:48<00:00,  6.2
+            Avg reward: 0.450522 | Ewma reward: 0.524614: 100%|█| 300/300 [00:56<00:00,  5.3
+            Avg reward: 0.468956 | Ewma reward: 0.513336: 100%|█| 300/300 [00:55<00:00,  5.4
+            Avg reward: 0.470623 | Ewma reward: 0.516475: 100%|█| 300/300 [01:05<00:00,  4.5
+            Avg reward: 0.474933 | Ewma reward: 0.502803: 100%|█| 300/300 [01:15<00:00,  3.9
+            Avg reward: 0.478990 | Ewma reward: 0.532622: 100%|█| 300/300 [01:25<00:00,  3.5
+            Avg reward: 0.476374 | Ewma reward: 0.509053: 100%|█| 300/300 [00:50<00:00,  5.9
+
+```
 
 ![DQN Learning Curve](images/dqn.png)
 
