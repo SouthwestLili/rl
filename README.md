@@ -171,19 +171,29 @@ Each episode terminates when either:
 
 ## Evaluation
 
-Agent performance is measured using **cumulative discounted episodic reward**:
+The project evaluates and compares three Q-learning approaches:
 
-\[
-G =
-\sum_{t=0}^{T-1}
-\gamma^t r_t
-\]
+1. **Tabular Q-Learning**
+2. **Q-Learning with Linear Function Approximation**
+3. **Deep Q-Learning (DQN)**
+
+All three approaches are evaluated using **cumulative discounted episodic reward**:
+
+`G = r_0 + gamma * r_1 + gamma^2 * r_2 + ... + gamma^(T-1) * r_(T-1)`
 
 Training and testing are performed separately.
 
-During training, the agent updates its Q-values or model parameters using collected transitions.
+During training, each agent updates its Q-function according to its representation:
 
-During testing, the learned policy is evaluated without updating the model. Performance is averaged across multiple episodes and experimental runs to reduce the effect of randomness.
+- **Tabular Q-Learning:** directly updates entries in a Q-table.
+- **Linear Q-Learning:** updates the parameter matrix `theta` using gradient-based updates.
+- **Deep Q-Learning:** updates the weights of a neural network using the temporal-difference target and gradient descent.
+
+During testing, the learned policy is evaluated without updating the Q-function or model parameters.
+
+Performance is averaged across multiple testing episodes and experimental runs to reduce the effect of randomness and provide a more reliable estimate of agent performance.
+
+The experiments demonstrate how the choice of Q-function representation affects learning behavior and performance, progressing from discrete tabular representations to linear function approximation and finally to neural-network-based approximation.
 
 ---
 
