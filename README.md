@@ -76,14 +76,18 @@ Maintaining an explicit Q-value for every state-action pair becomes impractical 
 
 To address this limitation, the second implementation approximates the Q-function using a linear model:
 
+$$
 \[
 Q(s,c;\theta) = \phi(s,c)^T\theta
 \]
+$$
 
 where:
 
+$$
 - \(\phi(s,c)\) is the feature representation of a state-command pair;
 - \(\theta\) contains the learnable parameters.
+$$
 
 Textual states are converted into vector representations using a **Bag-of-Words (BoW)** representation.
 
