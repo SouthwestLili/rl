@@ -225,6 +225,8 @@ The following learning curves visualize the training and testing performance of 
 The Tabular Q-Learning agent improves rapidly during training and reaches a relatively stable testing performance.
 
 ```
+run: python agent_tabular_ql.py
+
             Avg reward: 0.497583 | Ewma reward: 0.507615: 100%|█| 200/200 [00:01<00:00, 141.
             Avg reward: 0.499303 | Ewma reward: 0.492417: 100%|█| 200/200 [00:01<00:00, 152.
             Avg reward: 0.492159 | Ewma reward: 0.519425: 100%|█| 200/200 [00:01<00:00, 159.
