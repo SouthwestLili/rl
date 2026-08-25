@@ -64,18 +64,22 @@ For example:
 
 For each transition `(s, c, r, s')`, the Q-value is updated using the Q-learning rule:
 
-`Q(s, c) = Q(s, c) + alpha * [r + gamma * max Q(s', c') - Q(s, c)]`
+$$
+Q(s,c) = Q(s,c) + \alpha \left[r + \gamma \max_{c'} Q(s',c') - Q(s,c)\right]
+$$
 
 where:
 
-- `alpha` is the learning rate;
-- `gamma` is the discount factor;
-- `r` is the immediate reward;
-- `max Q(s', c')` represents the highest Q-value among all possible commands in the next state.
+- $$\alpha$$ is the learning rate;
+- $$\gamma$$ is the discount factor;
+- $$r$$ is the immediate reward;
+- $$\max Q(s', c')$$ represents the highest Q-value among all possible commands in the next state.
 
 For terminal states, there is no future Q-value, so the update becomes:
 
-`Q(s, c) = Q(s, c) + alpha * [r - Q(s, c)]`
+$$
+Q(s,c) = Q(s,c) + \alpha \left[r - Q(s,c)\right]
+$$
 
 An **epsilon-greedy policy** is used to balance exploration and exploitation:
 
@@ -92,12 +96,14 @@ Maintaining an explicit Q-value for every state-action pair becomes impractical 
 
 To address this limitation, the second implementation approximates the Q-function using a linear model:
 
-`Q(s, c; theta) = phi(s, c)^T * theta`
+$$
+Q(s,c;\theta) = \phi(s,c)^T \theta
+$$
 
 where:
 
-- `phi(s, c)` is the feature vector representing the state-command pair;
-- `theta` is the learnable parameter vector.
+- $$\phi(s,c)$$ is the feature vector representing the state-command pair;
+- $$\theta$$ is the learnable parameter vector.
 
 Textual states are first converted into vector representations using a **Bag-of-Words (BoW)** representation:
 
@@ -105,23 +111,31 @@ Textual states are first converted into vector representations using a **Bag-of-
 
 To distinguish different commands, the state feature vector is placed into a command-specific feature block:
 
-`phi(s, c) = [0, ..., psi_R(s), ..., 0]`
+$$
+\phi(s,c) = [0,\ldots,\psi_R(s),\ldots,0]
+$$
 
 This allows each command to learn its own parameter vector while using the same state representation framework.
 
 For each transition `(s, c, r, s')`, the temporal-difference (TD) error is:
 
-`delta = r + gamma * max Q(s', c') - Q(s, c)`
+$$
+\delta = r + \gamma \max_{c'} Q(s',c') - Q(s,c)
+$$
 
 where the maximum is taken over all possible next commands `c'`.
 
 For terminal states, there is no future Q-value, so:
 
-`delta = r - Q(s, c)`
+$$
+\delta = r - Q(s,c)
+$$
 
 The parameters are updated using:
 
-`theta = theta + alpha * delta * phi(s, c)`
+$$
+\theta = \theta + \alpha \delta \phi(s,c)
+$$
 
 where `alpha` is the learning rate.
 
@@ -145,17 +159,23 @@ For each transition:
 
 the Q-learning target for a non-terminal state is:
 
-`y = r + gamma * max Q(s', a')`
+$$
+y = r + \gamma \max_{a'} Q(s',a')
+$$
 
 where the maximum is taken over all possible next actions `a'`.
 
 For a terminal state, there is no future reward, so the target becomes:
 
-`y = r`
+$$
+y = r
+$$
 
 The prediction error is measured using the squared loss:
 
-`L = 1/2 * (y - Q(s, a))^2`
+$$
+L = \frac{1}{2}\left(y - Q(s,a)\right)^2
+$$
 
 The DQN parameters are then updated using gradient-based optimization to minimize this loss.
 
@@ -198,14 +218,16 @@ The project evaluates and compares three Q-learning approaches:
 
 All three approaches are evaluated using **cumulative discounted episodic reward**:
 
-`G = r_0 + gamma * r_1 + gamma^2 * r_2 + ... + gamma^(T-1) * r_(T-1)`
+$$
+G = r_0 + \gamma r_1 + \gamma^2 r_2 + \cdots + \gamma^{T-1} r_{T-1}
+$$
 
 Training and testing are performed separately.
 
 During training, each agent updates its Q-function according to its representation:
 
 - **Tabular Q-Learning:** directly updates entries in a Q-table.
-- **Linear Q-Learning:** updates the parameter matrix `theta` using gradient-based updates.
+- **Linear Q-Learning:** updates the parameter matrix $$\theta$$ using gradient-based updates.
 - **Deep Q-Learning:** updates the weights of a neural network using the temporal-difference target and gradient descent.
 
 During testing, the learned policy is evaluated without updating the Q-function or model parameters.
