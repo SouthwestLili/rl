@@ -41,7 +41,9 @@ The first implementation represents each unique textual state using a discrete i
 
 A state consists of:
 
-`state = (room_description, quest_description)`
+$$
+state = (room_description, quest_description)
+$$
 
 where:
 
@@ -52,7 +54,9 @@ The agent maintains a Q-table containing a Q-value for each state-command pair.
 
 Each command consists of an action and an object:
 
-`command = (action, object)`
+$$
+command = (action, object)
+$$
 
 For example:
 
@@ -62,7 +66,7 @@ For example:
 - `exercise bike`
 - `go north`
 
-For each transition `(s, c, r, s')`, the Q-value is updated using the Q-learning rule:
+For each transition $$(s, c, r, s')$$, the Q-value is updated using the Q-learning rule:
 
 $$
 Q(s,c) = Q(s,c) + \alpha \left[r + \gamma \max_{c'} Q(s',c') - Q(s,c)\right]
