@@ -42,7 +42,7 @@ The first implementation represents each unique textual state using a discrete i
 A state consists of:
 
 $$
-state = (room_description, quest_description)
+\text{state} = (\text{room description},\ \text{quest description})
 $$
 
 where:
@@ -55,7 +55,7 @@ The agent maintains a Q-table containing a Q-value for each state-command pair.
 Each command consists of an action and an object:
 
 $$
-command = (action, object)
+c = (\text{action},\ \text{object})
 $$
 
 For example:
@@ -87,10 +87,10 @@ $$
 
 An **epsilon-greedy policy** is used to balance exploration and exploitation:
 
-- with probability `epsilon`, the agent selects a random command;
-- with probability `1 - epsilon`, the agent selects the command with the highest current Q-value.
+- with probability $$\epsilon$$, the agent selects a random command;
+- with probability $$1 - \epsilon$$, the agent selects the command with the highest current Q-value.
 
-Experiments were performed with different values of `epsilon` and `alpha` to investigate how exploration and learning rate affect convergence and agent performance.
+Experiments were performed with different values of $$\epsilon$$ and $$\alpha$$ to investigate how exploration and learning rate affect convergence and agent performance.
 
 ---
 
@@ -121,13 +121,13 @@ $$
 
 This allows each command to learn its own parameter vector while using the same state representation framework.
 
-For each transition `(s, c, r, s')`, the temporal-difference (TD) error is:
+For each transition $$(s, c, r, s')$$, the temporal-difference (TD) error is:
 
 $$
 \delta = r + \gamma \max_{c'} Q(s',c') - Q(s,c)
 $$
 
-where the maximum is taken over all possible next commands `c'`.
+where the maximum is taken over all possible next commands $$c'$$.
 
 For terminal states, there is no future Q-value, so:
 
@@ -141,7 +141,7 @@ $$
 \theta = \theta + \alpha \delta \phi(s,c)
 $$
 
-where `alpha` is the learning rate.
+where $$\alpha$$ is the learning rate.
 
 This experiment also demonstrates an important limitation of linear function approximation: a simple linear model may not have sufficient representational capacity to accurately approximate the Q-function, even in a relatively small environment.
 
@@ -159,7 +159,7 @@ The neural network predicts Q-values for possible actions and objects.
 
 For each transition:
 
-`(s, a, r, s')`
+$$(s, a, r, s')$$
 
 the Q-learning target for a non-terminal state is:
 
@@ -167,7 +167,7 @@ $$
 y = r + \gamma \max_{a'} Q(s',a')
 $$
 
-where the maximum is taken over all possible next actions `a'`.
+where the maximum is taken over all possible next actions $$a'$$.
 
 For a terminal state, there is no future reward, so the target becomes:
 
@@ -185,8 +185,8 @@ The DQN parameters are then updated using gradient-based optimization to minimiz
 
 An **epsilon-greedy policy** is used for action selection:
 
-- with probability `epsilon`, the agent selects a random action;
-- with probability `1 - epsilon`, the agent selects the action with the highest predicted Q-value.
+- with probability $$\epsilon$$, the agent selects a random action;
+- with probability $$1 - \epsilon$$, the agent selects the action with the highest predicted Q-value.
 
 During training, the DQN parameters are updated from observed transitions. During testing, the learned policy is evaluated without updating the network.
 
